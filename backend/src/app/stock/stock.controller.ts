@@ -42,10 +42,10 @@ export class StockController {
   }
 
   /**
-   * Get historical data - requires trader role or admin
+   * Get historical data - requires admin role
    */
   @Get(':symbol/historical')
-  @Roles('trader', 'admin')
+  @Roles('admin')
   async getHistoricalPrices(
     @Param('symbol') symbol: string,
     @CurrentUser() user: AuthUser,

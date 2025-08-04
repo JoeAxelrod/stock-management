@@ -113,8 +113,7 @@ export class AuthService {
     // Create some demo tokens for testing
     const demoTokens = [
       { email: 'admin@example.com', roles: ['admin', 'user'] },
-      { email: 'user@example.com', roles: ['user'] },
-      { email: 'trader@example.com', roles: ['trader', 'user'] }
+      { email: 'user@example.com', roles: ['user'] }
     ];
 
     demoTokens.forEach(({ email, roles }) => {

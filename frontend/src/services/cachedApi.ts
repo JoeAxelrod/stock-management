@@ -24,7 +24,7 @@ class CachedApiService {
     }
 
     console.log('Cache miss: portfolio - Making API call');
-    const response = await api.get<PortfolioStock[]>('/portfolio');
+    const response = await api.get<PortfolioStock[]>('/api/portfolio');
     const data = response.data;
 
     // Cache the result
@@ -35,14 +35,14 @@ class CachedApiService {
   }
 
   async addToPortfolio(symbol: string): Promise<void> {
-    await api.post('/portfolio', { symbol });
+    await api.post('/api/portfolio', { symbol });
     
     // Invalidate portfolio cache
     this.invalidatePortfolioCache();
   }
 
   async removeFromPortfolio(symbol: string): Promise<void> {
-    await api.delete(`/portfolio/${symbol}`);
+    await api.delete(`/api/portfolio/${symbol}`);
     
     // Invalidate portfolio cache
     this.invalidatePortfolioCache();
@@ -63,7 +63,7 @@ class CachedApiService {
     }
 
     console.log(`Cache miss: stock ${symbol} - Making API call`);
-    const response = await api.get<Stock>(`/stocks/${symbol}`);
+    const response = await api.get<Stock>(`/api/stocks/${symbol}`);
     const data = response.data;
 
     // Cache the result with stock quote TTL (60s)

@@ -6,7 +6,7 @@ A lightweight token-based authentication system for the backend API with role-ba
 
 ### Core Components
 - **Token Validation**: Simple token-based authentication
-- **Role-Based Access**: Support for user roles (`user`, `trader`, `admin`)  
+- **Role-Based Access**: Support for user roles (`user`, `admin`)  
 - **Middleware Integration**: Global auth middleware for all routes
 - **Guard Protection**: Declarative route protection with decorators
 - **In-Memory Storage**: Fast token validation (demo implementation)
@@ -58,7 +58,7 @@ Authorization: Bearer st_abc123...
 ### Protected Stock Endpoints
 - `GET /stocks/:symbol` - Get quote (requires: user+)
 - `GET /stocks/:symbol/profile` - Get profile (requires: user+)
-- `GET /stocks/:symbol/historical` - Get historical data (requires: trader+ or admin)
+- `GET /stocks/:symbol/historical` - Get historical data (requires: admin)
 - `GET /stocks/_debug/rate-limit-status` - Debug info (requires: admin)
 
 ## Usage in Controllers
@@ -103,7 +103,6 @@ The system initializes with demo tokens for testing:
 |-------|-------|----------|
 | `admin@example.com` | `admin`, `user` | Full access |
 | `user@example.com` | `user` | Basic access |
-| `trader@example.com` | `trader`, `user` | Trading access |
 
 ## Architecture
 

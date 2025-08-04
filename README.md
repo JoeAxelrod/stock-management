@@ -116,7 +116,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 
 ### **Authentication & Security**
 - **Token-Based Auth**: Simple, scalable authentication system
-- **Role-Based Access**: Different access levels (user, trader, admin)
+- **Role-Based Access**: Different access levels (user, admin)
 - **Route Protection**: Declarative security with decorators
 - **Session Management**: Token expiration and revocation
 
