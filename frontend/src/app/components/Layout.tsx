@@ -8,18 +8,20 @@ import {
   Menu,
   MenuItem,
   IconButton,
-  Divider
+  Button
 } from '@mui/material';
-import { AccountCircle, Logout, Person } from '@mui/icons-material';
-import { Link, Outlet } from 'react-router-dom';
+import { AccountCircle, Logout, Person, Login as LoginIcon } from '@mui/icons-material';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import ThemeToggle from '../../components/ThemeToggle';
 
 import logo from '../../assets/logo.png';
 
 export default function Layout() {
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,6 +34,10 @@ export default function Layout() {
   const handleLogout = () => {
     logout();
     handleMenuClose();
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
   };
 
   return (
@@ -61,57 +67,91 @@ export default function Layout() {
             Stock Manager
           </Typography>
 
+          {/* Theme Toggle */}
+          <ThemeToggle position="relative" size="medium" />
+
           {/* Auth Section */}
-          {user && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              {/* User Roles */}
-              {user.roles.map((role) => (
-                <Chip 
-                  key={role}
-                  label={role}
-                  size="small"
-                  sx={{ 
-                    bgcolor: 'rgba(255,255,255,0.2)', 
-                    color: 'white',
-                    border: '1px solid rgba(255,255,255,0.3)'
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, ml: 1 }}>
+            {isAuthenticated && user ? (
+              <>
+                {/* User Roles */}
+                {user.roles.map((role) => (
+                  <Chip 
+                    key={role}
+                    label={role}
+                    size="small"
+                    sx={{ 
+                      bgcolor: 'rgba(255,255,255,0.2)', 
+                      color: 'white',
+                      border: '1px solid rgba(255,255,255,0.3)'
+                    }}
+                  />
+                ))}
+                
+                {/* Logout Button */}
+                <Button
+                  color="inherit"
+                  variant="outlined"
+                  startIcon={<Logout />}
+                  onClick={handleLogout}
+                  sx={{
+                    borderColor: 'rgba(255,255,255,0.5)',
+                    '&:hover': {
+                      borderColor: 'white',
+                      bgcolor: 'rgba(255,255,255,0.1)'
+                    }
                   }}
-                />
-              ))}
-              
-              {/* User Menu */}
-              <IconButton
-                color="inherit"
-                onClick={handleMenuOpen}
-                sx={{ ml: 1 }}
-              >
-                <AccountCircle />
-              </IconButton>
-              
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-              >
-                <MenuItem disabled>
-                  <Person sx={{ mr: 1 }} />
-                  {user.email}
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={handleLogout}>
-                  <Logout sx={{ mr: 1 }} />
+                >
                   Logout
-                </MenuItem>
-              </Menu>
-            </Box>
-          )}
+                </Button>
+                
+                {/* User Menu (keeping for user info) */}
+                <IconButton
+                  color="inherit"
+                  onClick={handleMenuOpen}
+                  sx={{ ml: 1 }}
+                >
+                  <AccountCircle />
+                </IconButton>
+                
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                >
+                  <MenuItem disabled>
+                    <Person sx={{ mr: 1 }} />
+                    {user.email}
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              /* Login Button for non-authenticated users */
+              <Button
+                color="inherit"
+                variant="outlined"
+                startIcon={<LoginIcon />}
+                onClick={handleLogin}
+                sx={{
+                  borderColor: 'rgba(255,255,255,0.5)',
+                  '&:hover': {
+                    borderColor: 'white',
+                    bgcolor: 'rgba(255,255,255,0.1)'
+                  }
+                }}
+              >
+                Login
+              </Button>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
       <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>

@@ -100,13 +100,18 @@ export default function Portfolio() {
         />
       </Box>
 
-      <Grid container spacing={2} justifyContent="center">
+      <Box sx={{ 
+        display: 'flex', 
+        flexWrap: 'wrap', 
+        gap: 2, 
+        justifyContent: 'center',
+        maxWidth: '600px',
+        mx: 'auto'
+      }}>
         {slice.map((stock) => (
-          <Grid key={stock.symbol} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <StockCard symbol={stock.symbol} onDelete={removeStock} />
-          </Grid>
+          <StockCard key={stock.symbol} symbol={stock.symbol} onDelete={removeStock} />
         ))}
-      </Grid>
+      </Box>
 
       {max > 1 && (
         <Pagination

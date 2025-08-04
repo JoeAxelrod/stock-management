@@ -8,7 +8,6 @@ import { useMemo } from 'react';
 import { getTheme } from '../theme';
 import { ThemeContextProvider, useTheme } from '../contexts/ThemeContext';
 import { AuthProvider } from '../contexts/AuthContext';
-import ThemeToggle from '../components/ThemeToggle';
 import ErrorBoundary from '../components/ErrorBoundary';
 import ProtectedRoute from '../components/ProtectedRoute';
 import NotFound from '../pages/NotFound';
@@ -22,7 +21,6 @@ function AppContent() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ThemeToggle />
       
       <Routes>
         {/* Public routes */}

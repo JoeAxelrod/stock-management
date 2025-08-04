@@ -2,7 +2,6 @@ import { Card, CardActionArea, CardContent, Typography, IconButton, CircularProg
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { ComponentErrorFallback } from '../../components/ErrorFallback';
 
 interface Props {
   symbol: string;
@@ -26,13 +25,21 @@ export default function StockCard({ symbol, onDelete }: Props) {
   return (
     <Card sx={{ 
       position: 'relative',
-      transition: 'all 0.3s ease-in-out',
-      '&:hover': {
-        transform: 'translateY(-2px)',
-      }
+      width: '120px',
+      height: '60px'
     }}>
-      <CardActionArea component={Link} to={`/stock/${symbol}`}>
-        <CardContent sx={{ pr: 5, py: 1 }}>
+      <CardActionArea 
+        component={Link} 
+        to={`/stock/${symbol}`}
+        sx={{ height: '100%' }}
+      >
+        <CardContent sx={{ 
+          padding: '8px',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
           <Typography variant="h6" align="center">
             {symbol}
           </Typography>
@@ -42,7 +49,19 @@ export default function StockCard({ symbol, onDelete }: Props) {
         size="small"
         onClick={handleDelete}
         disabled={deleting}
-        sx={{ position: 'absolute', top: 2, right: 2 }}
+        sx={{ 
+          position: 'absolute', 
+          top: 4, 
+          right: 4,
+          color: 'text.secondary',
+          backgroundColor: 'background.paper',
+          border: '1px solid',
+          borderColor: 'divider',
+          '&:hover': {
+            backgroundColor: 'action.hover',
+            color: 'text.primary'
+          }
+        }}
       >
         {deleting ? (
           <CircularProgress size={16} />
