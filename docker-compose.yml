@@ -1,16 +1,58 @@
 version: '3.8'
 
 services:
+  # MongoDB Database
   mongo:
     image: mongo:7
     container_name: stock-mongo
     restart: unless-stopped
     ports:
-      - "27017:27017"  # host:container
+      - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: stock-management
     volumes:
       - mongo-data:/data/db
+    networks:
+      - stock-network
+
+  # NestJS Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: stock-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/stock-management
+    depends_on:
+      - mongo
+    networks:
+      - stock-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: stock-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - stock-network
 
 volumes:
-  mongo-data: 
+  mongo-data:
+
+networks:
+  stock-network:
+    driver: bridge 

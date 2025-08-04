@@ -179,3 +179,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ---
 
 **Created as a technical demonstration for software engineering interviews**
+
+Built with ChatGPT (o3) + Cursor; every AI-generated line is reviewed by the developer.
+
+*Rule of thumb - if you wrote a prompt and went to do something else in the meantime - you're doing it wrong*
