@@ -55,4 +55,4 @@ curl -X POST http://localhost:3000/auth/login \
 
 ---
 
-**Built with AI + Human oversight** • [Interview demo project]
+**AI models used: mainly open AI O3 and also claude-4 + Human close review** • [Interview demo project]
