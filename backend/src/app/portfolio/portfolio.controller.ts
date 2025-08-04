@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,6 +8,8 @@ import {
 } from '@nestjs/common';
 import axios from 'axios';
 import { PortfolioService } from './portfolio.service';
+import { AddStockDto } from './dto/add-stock.dto';
+import { StockSymbolValidationPipe } from './validation/stock-symbol.pipe';
 
 @Controller('portfolio')
 export class PortfolioController {
@@ -28,11 +29,8 @@ export class PortfolioController {
    * Adds a symbol to the portfolio.
    */
   @Post()
-  async addStock(@Body('symbol') symbol: string): Promise<{ symbol: string }[]> {
-    if (!symbol) {
-      throw new BadRequestException('symbol is required');
-    }
-    await this.portfolioService.add(symbol);
+  async addStock(@Body() addStockDto: AddStockDto): Promise<{ symbol: string }[]> {
+    await this.portfolioService.add(addStockDto.symbol);
     return this.portfolioService.findAll();
   }
 
@@ -41,7 +39,7 @@ export class PortfolioController {
    * Removes a symbol from the portfolio.
    */
   @Delete(':symbol')
-  async removeStock(@Param('symbol') symbol: string): Promise<{ symbol: string }[]> {
+  async removeStock(@Param('symbol', StockSymbolValidationPipe) symbol: string): Promise<{ symbol: string }[]> {
     await this.portfolioService.remove(symbol);
     return this.portfolioService.findAll();
   }
