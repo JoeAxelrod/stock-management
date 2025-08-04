@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { api } from './axios';
 import { Box, Button, Typography, Skeleton, Alert, Paper } from '@mui/material';
+import { cachedApi } from '../services/cachedApi';
 
 interface Stock {
   symbol: string;
@@ -21,8 +21,8 @@ export default function StockDetail() {
       setLoading(true);
       setError('');
       try {
-        const res = await api.get<Stock>(`/stocks/${symbol}`);
-        setStock(res.data);
+        const data = await cachedApi.getStock(symbol);
+        setStock(data);
       } catch (err: any) {
         console.error(err);
         setError(err?.response?.data?.message ?? 'Failed to fetch stock');

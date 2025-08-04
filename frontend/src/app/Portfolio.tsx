@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { api } from './axios';
 import { Box, Typography, Skeleton, Alert, Grid, Pagination, Button } from '@mui/material';
 import AddStockForm from './components/AddStockForm';
 import StockCard from './components/StockCard';
 import { usePagination } from '../hooks/usePagination';
+import { cachedApi } from '../services/cachedApi';
 
 interface PortfolioStock {
   symbol: string;
@@ -20,8 +20,8 @@ export default function Portfolio() {
     try {
       setLoading(true);
       setError('');
-      const res = await api.get<PortfolioStock[]>('/portfolio');
-      setStocks(res.data);
+      const data = await cachedApi.getPortfolio();
+      setStocks(data);
     } catch (err: any) {
       console.error(err);
       setError(err?.response?.data?.message ?? 'Failed to fetch portfolio');
@@ -35,12 +35,12 @@ export default function Portfolio() {
   }, []);
 
   const addStock = async (symbol: string) => {
-    await api.post('/portfolio', { symbol });
+    await cachedApi.addToPortfolio(symbol);
     fetchPortfolio();
   };
 
   const removeStock = async (symbol: string) => {
-    await api.delete(`/portfolio/${symbol}`);
+    await cachedApi.removeFromPortfolio(symbol);
     fetchPortfolio();
   };
 
