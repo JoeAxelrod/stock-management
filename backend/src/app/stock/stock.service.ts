@@ -1,40 +1,40 @@
-// apps/backend/src/app/stock/stock.service.ts
-import {
-  Injectable,
-  HttpException,
-  HttpStatus,
-  NotFoundException,
-} from '@nestjs/common';
-import axios from 'axios';
+import { Injectable, Logger } from '@nestjs/common';
+import { FmpApiService } from '../shared/services/fmp-api.service';
 
 @Injectable()
 export class StockService {
+  private readonly logger = new Logger(StockService.name);
+
+  constructor(private readonly fmpApiService: FmpApiService) {}
+
+  /**
+   * Fetch stock quote with rate limiting and retry logic
+   */
   async fetchQuote(symbol: string) {
-    try {
-      const { data } = await axios.get(
-        `https://financialmodelingprep.com/api/v3/quote/${symbol}`,
-        { params: { apikey: process.env.FMP_API_KEY } },
-      );
+    this.logger.debug(`Fetching quote for symbol: ${symbol}`);
+    return await this.fmpApiService.getQuote(symbol);
+  }
 
-      if (!data?.length) {
-        // Symbol not found in FMP
-        console.log('Symbol not found in FMP');
-        throw new NotFoundException(`Symbol ${symbol} not found`);
-      }
+  /**
+   * Fetch company profile data
+   */
+  async fetchCompanyProfile(symbol: string) {
+    this.logger.debug(`Fetching company profile for symbol: ${symbol}`);
+    return await this.fmpApiService.getCompanyProfile(symbol);
+  }
 
-      return data[0];
-    } catch (error: any) {
-      // Axios errors have a response object when the server responded
-      if (error?.isAxiosError && error.response) {
-        const status: number = error.response.status;
-        if (status === 404) {
-          throw new NotFoundException(`Symbol ${symbol} not found`);
-        }
-        throw new HttpException(error.response.statusText, status);
-      }
+  /**
+   * Fetch historical price data
+   */
+  async fetchHistoricalPrices(symbol: string, from?: string, to?: string) {
+    this.logger.debug(`Fetching historical prices for symbol: ${symbol}`);
+    return await this.fmpApiService.getHistoricalPrices(symbol, from, to);
+  }
 
-      // Fallback – service unavailable or other unknown issue
-      throw new HttpException('FMP request failed', HttpStatus.BAD_GATEWAY);
-    }
+  /**
+   * Get rate limiter status for debugging
+   */
+  getRateLimiterStatus() {
+    return this.fmpApiService.getRateLimiterStatus();
   }
 }

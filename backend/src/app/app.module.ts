@@ -4,19 +4,18 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PortfolioModule } from './portfolio.module';
 import { StockModule } from './stock.module';
-import { StockService } from './stock/stock.service';
-import { StockController } from './stock/stock.controller';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_URI as string),
+    SharedModule,
     PortfolioModule,
     StockModule,
   ],
   controllers: [
     AppController,
-    StockController,
   ],
-  providers: [AppService, StockService],
+  providers: [AppService],
 })
 export class AppModule {}
