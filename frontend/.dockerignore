@@ -2,9 +2,9 @@
 node_modules/
 npm-debug.log*
 
-# Build outputs
-dist/
-build/
+# Build outputs (commented out since we need dist for Docker)
+# dist/
+# build/
 
 # Environment files
 .env
