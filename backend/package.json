@@ -2,54 +2,17 @@
   "name": "@stock-management/backend",
   "version": "0.0.1",
   "private": true,
-  "nx": {
-    "targets": {
-      "build": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "webpack-cli build",
-          "args": [
-            "--node-env=production"
-          ]
-        },
-        "configurations": {
-          "development": {
-            "args": [
-              "--node-env=development"
-            ]
-          }
-        }
-      },
-      "serve": {
-        "continuous": true,
-        "executor": "@nx/js:node",
-        "defaultConfiguration": "development",
-        "dependsOn": [
-          "build"
-        ],
-        "options": {
-          "buildTarget": "@stock-management/backend:build",
-          "runBuildTargetDependencies": false
-        },
-        "configurations": {
-          "development": {
-            "buildTarget": "@stock-management/backend:build:development"
-          },
-          "production": {
-            "buildTarget": "@stock-management/backend:build:production"
-          }
-        }
-      }
-    }
-  },
   "dependencies": {
     "axios": "^1.11.0",
     "dotenv": "^17.2.1",
     "class-validator": "^0.14.0",
     "class-transformer": "^0.5.1",
-    "@nestjs/common": "^10.0.0",
-    "@nestjs/core": "^10.0.0",
-    "@nestjs/mongoose": "^10.0.0",
-    "mongoose": "^8.0.0"
+    "@nestjs/common": "^11.1.5",
+    "@nestjs/core": "^11.1.5",
+    "@nestjs/mongoose": "^11.0.3",
+    "@nestjs/platform-express": "^11.1.5",
+    "mongoose": "^8.0.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
   }
 }

@@ -4,13 +4,7 @@
   "files": [],
   "references": [
     {
-      "path": "./backend-e2e"
-    },
-    {
       "path": "./backend"
-    },
-    {
-      "path": "./frontend-e2e"
     },
     {
       "path": "./frontend"

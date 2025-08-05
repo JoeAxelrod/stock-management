@@ -4,7 +4,10 @@
  */
 
 import * as dotenv from 'dotenv';
-dotenv.config();
+import { join } from 'path';
+
+// Load .env file from the backend directory
+dotenv.config({ path: join(__dirname, '..', '.env') });
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
